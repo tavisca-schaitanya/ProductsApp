@@ -1,0 +1,75 @@
+<div>
+    <h2>The Reactive Form Component</h2>
+    <form name="productForm" [formGroup]="productForm" (ngSubmit)="save()">
+        <div>
+            <label>Product Id</label>
+            <input type="text" formControlName="ProductId" name="ProductId">
+            <div *ngIf="productForm.controls.ProductId.dirty && !productForm.controls.ProductId.valid">
+                <p *ngIf="productForm.controls.ProductId.errors.required">Product id is required</p>
+                <p *ngIf="productForm.controls.ProductId.errors.duplicate">Product id is already present</p>
+            </div>
+        </div>
+        <div>
+            <label>Product Name</label>
+            <input type="text" formControlName="ProductName" name="ProductName">
+            <div *ngIf="productForm.controls.ProductName.dirty && !productForm.controls.ProductName.valid">
+                <p *ngIf="productForm.controls.ProductName.errors.required">Product name is required</p>
+            </div>
+        </div>
+        <div>
+            <label>Categories</label>
+            <select formControlName="Category" name="CategoryName">
+                <option *ngFor="let c of categories" value="{{c}}">{{c}}</option>
+            </select>
+            <div *ngIf="productForm.controls.Category.dirty && !productForm.controls.Category.valid">
+                <p *ngIf="productForm.controls.Category.errors.required">Category is required</p>
+            </div>
+        </div>
+        <div>
+            <label>Manufacturers</label>
+            <select formControlName="Manufacturer" name="Manufacturer">
+                <option *ngFor="let m of manufacturers" value="{{m}}">{{m}}</option>
+            </select>
+            <div *ngIf="productForm.controls.Manufacturer.dirty && !productForm.controls.Manufacturer.valid">
+                <p *ngIf="productForm.controls.Manufacturer.errors.required">Manufacturer is required</p>
+            </div>
+        </div>
+        <div>
+            <label>Description</label>
+            <input formControlName="Description" name="Description" type="text">
+            <div *ngIf="productForm.controls.Description.dirty && !productForm.controls.Description.valid">
+                <p *ngIf="productForm.controls.Description.errors.required">Description id is required</p>
+            </div>
+        </div>
+        <div>
+            <label>Price</label>
+            <input type="text" formControlName="Price" name="Price">
+            <div *ngIf="productForm.controls.Price.dirty && !productForm.controls.Price.valid">
+                <p *ngIf="productForm.controls.Price.errors.required">Price is required</p>
+                <p *ngIf="productForm.controls.Price.errors.min">Price must be positive</p>
+            </div>
+        </div>
+        <div>
+            <input type="button" value="Clear" (click)="clear()">
+            <input type="submit" value="Save" [disabled]="!productForm.valid">
+        </div>
+    </form>
+</div>
+<br>
+<input type="radio" name="table-action" (change)="modifyTable(tableAction.sort)"/>
+<label>Sort</label>
+<input type="radio" name="table-action" (change)="modifyTable(tableAction.reverse)"/>
+<label>Reverse</label>
+<table>
+    <thead>
+        <tr>
+            <th *ngFor="let h of headers">{{h}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let prd of products" (click)="getSelectedRecord(prd)">
+            <td *ngFor="let h of headers">{{prd[h]}}</td>
+            <td><button (click)="delete(prd)">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
